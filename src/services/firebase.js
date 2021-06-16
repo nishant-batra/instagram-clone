@@ -8,3 +8,18 @@ export async function doesUserNameExists(username) {
   // console.log(result.docs.length);
   return result.docs.length;
 }
+
+export async function getUserById(userId) {
+  const result = await firebase
+    .firestore()
+    .collection("users")
+    .where("userId", "==", userId)
+    .get();
+  const user = result.docs.map((item) => {
+    return {
+      ...item.data(),
+      docId: item.id,
+    };
+  });
+  return user;
+}
