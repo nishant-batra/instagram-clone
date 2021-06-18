@@ -4,13 +4,13 @@ import Suggestions from "./suggestions";
 import User from "./user";
 function Sidebar(props) {
   const {
-    user: { fullName, username, userId },
+    user: { fullName, username, userId, following },
   } = useUser();
-  console.log("user", fullName, username);
+  // console.log("user", following);
   return (
     <div className="p-4">
       <User userName={username} fullName={fullName} />
-      <Suggestions userId={userId} />
+      <Suggestions userId={userId} following={following} />
     </div>
   );
 }
