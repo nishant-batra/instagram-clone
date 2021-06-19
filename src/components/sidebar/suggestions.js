@@ -19,7 +19,7 @@ function Suggestions(props) {
 
     getSuggestions(props.following);
   }, [props.following, props.userId]);
-  console.log("profile", profiles);
+  // console.log("profile", profiles);
   return !profiles ? (
     <Skeleton count={1} height={150} className="mt-5" />
   ) : profiles.length > 0 ? (
@@ -27,7 +27,7 @@ function Suggestions(props) {
       <div className="text-sm flex items-center align-items justify-between mb-2">
         <p className="font-bold text-gray-base">Suggestions for you </p>
       </div>
-      <div>
+      <div className="mt-4 grid gap-5">
         {profiles.map((profile) => {
           return (
             <SuggestedProfile
@@ -36,6 +36,7 @@ function Suggestions(props) {
               username={profile.username}
               profileId={profile.userId}
               userId={props.userId}
+              docId={props.docId}
             />
           );
         })}

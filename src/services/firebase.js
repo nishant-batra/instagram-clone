@@ -34,3 +34,37 @@ export async function getUserSuggestions(following = [], userId) {
         profile.userId !== userId && !following.includes(profile.userId)
     );
 }
+
+export async function updateFollower(uid, userId, followerId) {
+  const ans = await firebase
+    .firestore()
+    .collection("users")
+    .where("userId", "==", uid)
+    .get();
+  const followers = ans.docs[0].data().followers;
+  console.log("followers ", followers);
+  const result = await firebase
+    .firestore()
+    .collection("users")
+    .doc(userId)
+    .update({
+      followers: [...followers, followerId],
+    });
+}
+export async function updateFollowing(uid, userId, followId) {
+  const ans = await firebase
+    .firestore()
+    .collection("users")
+    .where("userId", "==", uid)
+    .get();
+  const following = ans.docs[0].data().following;
+  console.log("following ", following);
+  const result = await firebase
+    .firestore()
+    .collection("users")
+    .doc(userId)
+    .update({
+      following: [...following, followId],
+    });
+  return;
+}
