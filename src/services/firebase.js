@@ -35,36 +35,74 @@ export async function getUserSuggestions(following = [], userId) {
     );
 }
 
-export async function updateFollower(uid, userId, followerId) {
+export async function updateFollower(idToFollow, docIdToFollow, followerId) {
   const ans = await firebase
     .firestore()
     .collection("users")
-    .where("userId", "==", uid)
+    .where("userId", "==", idToFollow)
     .get();
-  const followers = ans.docs[0].data().followers;
+  let followers = ans.docs[0].data().followers;
+  if (followers.includes(followerId)) {
+    followers = followers
+      .map((follower) => follower)
+      .filter((id) => id !== followerId);
+  } else followers = [...followers, followerId];
   console.log("followers ", followers);
   const result = await firebase
     .firestore()
     .collection("users")
-    .doc(userId)
+    .doc(docIdToFollow)
     .update({
-      followers: [...followers, followerId],
+      followers: followers,
     });
 }
-export async function updateFollowing(uid, userId, followId) {
+export async function updateFollowing(userId, userDocID, followedId) {
   const ans = await firebase
     .firestore()
     .collection("users")
-    .where("userId", "==", uid)
+    .where("userId", "==", userId)
     .get();
-  const following = ans.docs[0].data().following;
+  let following = ans.docs[0].data().following;
+  if (following.includes(followedId)) {
+    following = following
+      .map((follow) => follow)
+      .filter((id) => id !== followedId);
+  } else following = [...following, followedId];
   console.log("following ", following);
   const result = await firebase
     .firestore()
     .collection("users")
-    .doc(userId)
+    .doc(userDocID)
     .update({
-      following: [...following, followId],
+      following: following,
     });
   return;
+}
+
+export async function getPhotos(userId, following) {
+  const result = await firebase
+    .firestore()
+    .collection("photos")
+    .where("userId", "in", following)
+    .get();
+  const userFollowedPhotos = result.docs.map((photo) => {
+    return {
+      ...photo.data(),
+      docId: photo.id,
+    };
+  });
+  const photosWithUSerDetails = await Promise.all(
+    userFollowedPhotos.map(async (photo) => {
+      let userLikedPhoto = false;
+      if (photo.likes.includes(userId)) {
+        userLikedPhoto = true;
+      }
+      const user = await getUserById(photo.userId);
+      const { username } = user[0];
+      photo = { ...photo, userLikedPhoto, username };
+      //  console.log("photo", photo);
+      return photo;
+    })
+  );
+  return userFollowedPhotos;
 }

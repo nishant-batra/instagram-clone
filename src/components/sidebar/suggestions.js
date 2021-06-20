@@ -32,11 +32,11 @@ function Suggestions(props) {
           return (
             <SuggestedProfile
               key={profile.docId}
-              userDocId={profile.docId}
-              username={profile.username}
-              profileId={profile.userId}
+              suggestedUserDocId={profile.docId}
+              suggestedUsername={profile.username}
+              suggestedProfileId={profile.userId}
               userId={props.userId}
-              docId={props.docId}
+              userDocId={props.docId}
             />
           );
         })}

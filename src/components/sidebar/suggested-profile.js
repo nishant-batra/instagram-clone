@@ -3,13 +3,18 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { updateFollower, updateFollowing } from "../../services/firebase";
-function SuggestedProfile({ userDocId, username, profileId, userId, docId }) {
+function SuggestedProfile({
+  userDocId,
+  suggestedProfileId,
+  suggestedUsername,
+  suggestedUserDocId,
+  userId,
+}) {
   const [followed, setFollowed] = useState(false);
   async function handleFollow() {
-    console.log("clicked");
     setFollowed(true);
-    await updateFollower(profileId, userDocId, userId);
-    await updateFollowing(userId, docId, profileId);
+    await updateFollower(suggestedProfileId, suggestedUserDocId, userId);
+    await updateFollowing(userId, userDocId, suggestedProfileId);
   }
   return !followed ? (
     <div className="flex flex-row items-center align-items justify-between">
@@ -20,11 +25,11 @@ function SuggestedProfile({ userDocId, username, profileId, userId, docId }) {
             e.target.onerror = null;
             e.target.src = "/images/avatars/default.png";
           }}
-          src={`/images/avatars/${username}.jpg`}
+          src={`/images/avatars/${suggestedUsername}.jpg`}
           alt="suggestions profile pic"
         />
-        <Link to={`/p/${username}`}>
-          <p className="font-bold test-sm">{username}</p>
+        <Link to={`/p/${suggestedUsername}`}>
+          <p className="font-bold test-sm">{suggestedUsername}</p>
         </Link>
       </div>
       <div>
@@ -43,7 +48,8 @@ function SuggestedProfile({ userDocId, username, profileId, userId, docId }) {
 export default SuggestedProfile;
 SuggestedProfile.propTypes = {
   userDocId: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
-  profileId: PropTypes.string.isRequired,
+  suggestedUsername: PropTypes.string.isRequired,
+  suggestedProfileId: PropTypes.string.isRequired,
+  suggestedUserDocId: PropTypes.string.isRequired,
   userId: PropTypes.string.isRequired,
 };
