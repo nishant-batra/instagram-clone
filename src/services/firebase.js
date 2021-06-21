@@ -104,5 +104,5 @@ export async function getPhotos(userId, following) {
       return photo;
     })
   );
-  return userFollowedPhotos;
+  return photosWithUSerDetails;
 }
