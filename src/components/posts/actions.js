@@ -46,8 +46,9 @@ function Actions({ docId, totalLikes, likedPhoto, handleFocus }) {
             />
           </svg>
           <svg
+          onClick={()=>handleFocus()}
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 ml-4 text-black-light select-none"
+            className="h-6 ml-4 text-black-light select-none cursor-pointer"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
