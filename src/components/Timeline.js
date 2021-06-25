@@ -18,7 +18,11 @@ function Timeline(props) {
           <Post key={content.docId} content={content} user />
         ))
       ) : (
-        <p className="text-center text-2xl">Follow People to see photos</p>
+        <p className="text-center text-2xl">
+          Follow People to see photos
+          <br />
+          Please reload the page after following
+        </p>
       )}
     </div>
   );

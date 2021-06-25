@@ -7,23 +7,25 @@ import Header from "../components/Header";
 function Profile(props) {
   const { username } = useParams(); //this is becuase profile route is /p/:username;
   const [userExists, setUserExists] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
   const history = useHistory();
   useEffect(() => {
     async function checkUserExists() {
-      const doesUserExist = await getUserByUsername(username);
-      if (doesUserExist.length > 0) {
+      const [doesUserExist] = await getUserByUsername(username);
+      if (doesUserExist) {
+        setUser(doesUserExist);
         setUserExists(true);
-        setUser(doesUserExist[0]);
       } else {
         history.push(ROUTES.NOT_FOUND);
       }
     }
     checkUserExists();
+    // console.log("user", user);
   }, [history, username]);
   return userExists ? (
     <div className="bg-gray-background">
       <Header />
+      {/* {console.log("user",user)} */}
       <div className="mx-auto max-w-screen-lg">
         <UserProfile user={user} />
       </div>
