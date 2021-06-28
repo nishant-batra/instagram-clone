@@ -1,4 +1,4 @@
-import { firebase, FieldValue } from "../lib/firebase";
+import { firebase } from "../lib/firebase";
 export async function doesUserNameExists(username) {
   const result = await firebase
     .firestore()
@@ -47,14 +47,10 @@ export async function updateFollower(idToFollow, docIdToFollow, followerId) {
       .map((follower) => follower)
       .filter((id) => id !== followerId);
   } else followers = [...followers, followerId];
-//  console.log("followers ", followers);
-  const result = await firebase
-    .firestore()
-    .collection("users")
-    .doc(docIdToFollow)
-    .update({
-      followers: followers,
-    });
+  //  console.log("followers ", followers);
+  await firebase.firestore().collection("users").doc(docIdToFollow).update({
+    followers: followers,
+  });
 }
 export async function updateFollowing(userId, userDocID, followedId) {
   const ans = await firebase
@@ -68,14 +64,10 @@ export async function updateFollowing(userId, userDocID, followedId) {
       .map((follow) => follow)
       .filter((id) => id !== followedId);
   } else following = [...following, followedId];
- // console.log("following ", following);
-  const result = await firebase
-    .firestore()
-    .collection("users")
-    .doc(userDocID)
-    .update({
-      following: following,
-    });
+  // console.log("following ", following);
+  await firebase.firestore().collection("users").doc(userDocID).update({
+    following: following,
+  });
   return;
 }
 
@@ -157,4 +149,3 @@ export async function isUserFollowingProfile(
   if (response.username) return 1;
   else return 0;
 }
-

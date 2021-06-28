@@ -19,7 +19,7 @@ const User = ({ userName, fullName }) =>
             e.target.onerror = null;
             e.target.src = "/images/avatars/default.png";
           }}
-          alt="profile picture"
+          alt="profile pic"
         />
       </div>
       <div className="col-span-3">

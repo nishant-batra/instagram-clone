@@ -3,7 +3,11 @@ import { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import PropTypes from "prop-types";
 import useUser from "../../hooks/use-user";
-import { isUserFollowingProfile, updateFollower, updateFollowing } from "../../services/firebase";
+import {
+  isUserFollowingProfile,
+  updateFollower,
+  updateFollowing,
+} from "../../services/firebase";
 function Header({
   photosCount,
   profile: {
@@ -12,7 +16,7 @@ function Header({
     username: profileUsername,
     fullName,
     following = [],
-    followers
+    followers,
   },
   followerCount,
   setFollowerCount,
@@ -36,13 +40,13 @@ function Header({
   }, [user.username, profileUserId]);
   //console.log("puid", profileUserId);
   const handleToggelFollow = async () => {
-    await updateFollower(profileUserId,profileDocId,user.userId);
-    await updateFollowing(user.userId,user.docId,profileUserId);
+    await updateFollower(profileUserId, profileDocId, user.userId);
+    await updateFollowing(user.userId, user.docId, profileUserId);
     setIsFollowingProfile((isFollowingProfile) => !isFollowingProfile);
     setFollowerCount({
       followerCount: isFollowingProfile ? followerCount - 1 : followerCount + 1,
     });
-   // console.log("followersCount", followerCount);
+    // console.log("followersCount", followerCount);
   };
   return (
     <div className="grid grid-cols-3 gap-4 justify-between mx-auto max-w-screen-lg">
@@ -50,7 +54,7 @@ function Header({
         {profileUsername && (
           <img
             className="rounded-full h-40 w-40 flex"
-            alt={`${profileUsername}'s profile photo`}
+            alt={`${profileUsername}'s profile pic`}
             src={`/images/avatars/${profileUsername}.jpg`}
             onError={(e) => {
               e.target.onerror = null;
@@ -73,22 +77,31 @@ function Header({
           )}
         </div>
         <div className="container flex mt-4">
-                {followers===undefined || following===undefined?(<Skeleton count={1} height={24}/>):(<>
-                <p className="mr-10">
-                  <span className="font-bold">{photosCount} {photosCount===1?'Photo':'Photos'} </span>
-                </p>
-                <p className="mr-10">
-                  <span className="font-bold">{followerCount} {followerCount===1?'Follower':'Followers'}</span>
-                </p>
-                <p className="mr-10">
-                  <span className="font-bold">{following.length} Following</span>
-                </p>
-                </>)}
+          {followers === undefined || following === undefined ? (
+            <Skeleton count={1} height={24} />
+          ) : (
+            <>
+              <p className="mr-10">
+                <span className="font-bold">
+                  {photosCount} {photosCount === 1 ? "Photo" : "Photos"}{" "}
+                </span>
+              </p>
+              <p className="mr-10">
+                <span className="font-bold">
+                  {followerCount}{" "}
+                  {followerCount === 1 ? "Follower" : "Followers"}
+                </span>
+              </p>
+              <p className="mr-10">
+                <span className="font-bold">{following.length} Following</span>
+              </p>
+            </>
+          )}
         </div>
         <div className="container mt-4">
-                  <p className="font-medium">
-                    {!fullName?<Skeleton count={1} height={24}/>:fullName}
-                  </p>
+          <p className="font-medium">
+            {!fullName ? <Skeleton count={1} height={24} /> : fullName}
+          </p>
         </div>
       </div>
     </div>

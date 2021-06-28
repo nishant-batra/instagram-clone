@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import UserContext from "../../context/user";
+import React, { useState, useEffect } from "react";
 import { getUserSuggestions } from "../../services/firebase";
 import Skeleton from "react-loading-skeleton";
 import PropTypes from "prop-types";

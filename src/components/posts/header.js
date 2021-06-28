@@ -9,7 +9,7 @@ function Header({ username }) {
           <img
             className="rounded-full h-8 w-8 flex mr-3"
             src={`/images/avatars/${username}.jpg`}
-            alt={`${username}'s profile picture`}
+            alt={`${username}'s profile pic`}
             onError={(e) => {
               e.target.onerror = null;
               e.target.src = "/images/avatars/default.png";

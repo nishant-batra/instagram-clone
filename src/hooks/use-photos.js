@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import UserContext from "../context/user";
 import { getPhotos, getUserById } from "../services/firebase";
 
-function usePhotos(props) {
+function usePhotos() {
   const [photos, setPhotos] = useState(null);
   const { user } = useContext(UserContext);
 
@@ -23,7 +23,7 @@ function usePhotos(props) {
     if (userId) {
       getTimelinePhotos();
     }
-  }, [user]);
+  }, [user, userId]);
   return photos;
 }
 

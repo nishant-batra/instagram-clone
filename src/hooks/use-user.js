@@ -7,7 +7,7 @@ export default function useUser() {
   useEffect(() => {
     async function getUserObjectById() {
       const [result] = await getUserById(user.uid);
-      console.log(result);
+      //  console.log(result);
       setActiveUser(result);
     }
     if (user?.uid) {

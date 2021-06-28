@@ -28,7 +28,7 @@ function Login(props) {
       <div className="flex w-3/5">
         <img
           src="../../images/iphone-with-profile.jpg"
-          alt="iphone with login image"
+          alt="iphone with login pic"
         />
       </div>
       <div className="flex flex-col w-2/5">
