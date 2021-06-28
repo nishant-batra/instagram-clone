@@ -4,10 +4,10 @@ import FirebaseContext from "../context/firebase";
 import { Link } from "react-router-dom";
 import UserContext from "../context/user";
 import * as ROUTES from "../constants/routes";
-function Header(props) {
+function Header() {
   const { firebase } = useContext(FirebaseContext);
   const { user } = useContext(UserContext);
-  // console.log("header user", user);
+  //console.log("header user", user);
   return (
     <header className="h-16 bg-white border-b border-gray-primary mb-8">
       <div className="container mx-auto max-w-screen-lg h-full">
@@ -46,12 +46,16 @@ function Header(props) {
 
                 <div className="flex items-center cursor-pointer">
                   <Link
-                    to={`/p/${user.displayName.toLowerCase()}`}
+                    to={`/p/${
+                      user.displayName.toLowerCase()
+                        ? user.displayName
+                        : "notfound"
+                    }`}
                     aria-label="user"
                   >
                     <img
                       className="rounded-full h-8 w-8 flex mr-6"
-                      src={`/images/avatars/${user.displayName.toLowerCase()}.jpg`}
+                      src={`/images/avatars/${user.displayName}.jpg`}
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = "/images/avatars/default.png";

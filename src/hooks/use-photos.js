@@ -3,7 +3,7 @@ import UserContext from "../context/user";
 import { getPhotos, getUserById } from "../services/firebase";
 
 function usePhotos() {
-  const [photos, setPhotos] = useState(null);
+  const [photos, setPhotos] = useState([]);
   const { user } = useContext(UserContext);
 
   const { uid: userId = "" } = user;

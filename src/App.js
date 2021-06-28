@@ -4,7 +4,6 @@ import * as ROUTES from "./constants/routes";
 import UserContext from "./context/user";
 import useAuthListener from "./hooks/use-auth-listener";
 import ProtectedRoutes from "./helpers/protected.routes";
-import IsUserLoggedIn from "./helpers/is-user-logged-in";
 import "./styles/app.css";
 
 const Login = lazy(() => {
@@ -29,12 +28,9 @@ function App() {
       <Suspense fallback={<div>Loading...</div>}>
         <Router>
           <Switch>
-            <IsUserLoggedIn user={user} path={ROUTES.LOGIN} exact>
-              <Login />
-            </IsUserLoggedIn>
-            <IsUserLoggedIn user={user} path={ROUTES.SIGNUP} exact>
-              <Signup />
-            </IsUserLoggedIn>
+            <Route component={Login} path={ROUTES.LOGIN} />
+            <Route component={Signup} path={ROUTES.SIGNUP} />
+
             <ProtectedRoutes user={user} path={ROUTES.DASHBOARD} exact>
               <Dashboard />
             </ProtectedRoutes>

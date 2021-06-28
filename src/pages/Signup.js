@@ -41,6 +41,7 @@ function Signup(props) {
         setError(error.message);
       }
     } else {
+      setUserName("");
       setError("Username already taken, please try a different one ");
     }
   };

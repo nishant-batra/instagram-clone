@@ -24,7 +24,7 @@ function Header({
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
   const { user } = useUser();
   const activeButtonFollow =
-    profileUsername && user.username !== profileUsername;
+    profileUsername && user.username !== profileUsername && user.username;
   //  console.log("authUser", user);
   useEffect(() => {
     const isLoggedInUserFollowingProfile = async () => {
