@@ -1,16 +1,18 @@
-import React from "react";
-import useUser from "../../hooks/use-user";
+import React, { useContext } from "react";
+import LoggedInUserContext from "../../context/logged-in-user";
 import Suggestions from "./suggestions";
 import User from "./user";
 function Sidebar(props) {
-  const {
-    user: { fullName, username, userId, following, docId },
-  } = useUser();
-  // console.log("user", following);
+  const { user } = useContext(LoggedInUserContext);
+  //console.log("user", user);
   return (
     <div className="p-4">
-      <User userName={username} fullName={fullName} />
-      <Suggestions userId={userId} following={following} docId={docId} />
+      <User userName={user.username} fullName={user.fullName} />
+      <Suggestions
+        userId={user.userId}
+        following={user.following}
+        docId={user.docId}
+      />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import PropTypes from "prop-types";
@@ -8,6 +8,8 @@ import {
   updateFollower,
   updateFollowing,
 } from "../../services/firebase";
+import UserContext from "../../context/user";
+import useAuthListener from "../../hooks/use-auth-listener";
 function Header({
   photosCount,
   profile: {
@@ -15,16 +17,22 @@ function Header({
     userId: profileUserId,
     username: profileUsername,
     fullName,
-    following = [],
+    following,
     followers,
   },
   followerCount,
   setFollowerCount,
 }) {
+  const { user: authUser } = useAuthListener();
+  //console.log("authUser", authUser);
+  const { user: loggedInUser } = useContext(UserContext);
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
-  const { user } = useUser();
+  const { user } = useUser(loggedInUser?.uid);
   const activeButtonFollow =
-    profileUsername && user.username !== profileUsername && user.username;
+    authUser &&
+    profileUsername &&
+    user.username !== profileUsername &&
+    user.username;
   //  console.log("authUser", user);
   useEffect(() => {
     const isLoggedInUserFollowingProfile = async () => {
@@ -34,10 +42,10 @@ function Header({
       );
       setIsFollowingProfile(isFollowing);
     };
-    if (user.username && profileUserId) {
+    if (loggedInUser && user.username && profileUserId) {
       isLoggedInUserFollowingProfile();
     }
-  }, [user.username, profileUserId]);
+  }, [authUser, user, profileUsername]);
   //console.log("puid", profileUserId);
   const handleToggelFollow = async () => {
     await updateFollower(profileUserId, profileDocId, user.userId);

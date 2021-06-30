@@ -23,6 +23,7 @@ const Profile = lazy(() => {
 });
 function App() {
   const { user } = useAuthListener();
+ 
   return (
     <UserContext.Provider value={{ user }}>
       <Suspense fallback={<div>Loading...</div>}>

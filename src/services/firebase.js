@@ -77,6 +77,7 @@ export async function getPhotos(userId, following) {
     .collection("photos")
     .where("userId", "in", following)
     .get();
+ 
   const userFollowedPhotos = result.docs.map((photo) => {
     return {
       ...photo.data(),
@@ -113,7 +114,7 @@ export async function getUserByUsername(username) {
 }
 
 export async function getPhotosByUsername(username) {
-  console.log("usernmae", username);
+//  console.log("usernmae", username);
 
   const [{ userId }] = await getUserByUsername(username);
   // console.log("userid", userId);

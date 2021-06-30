@@ -41,6 +41,9 @@ function AddComment({ docId, comments, setComments, commentInput }) {
             setComment(event.target.value);
             return;
           }}
+          onKeyPress={(event) => {
+            if (event.key === "Enter") return handleComment(event);
+          }}
           ref={commentInput}
         />
         <button
