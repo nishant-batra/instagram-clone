@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import PropTypes from "prop-types";
+import UserContext from "../../context/user";
+import useUser from "../../hooks/use-user";
 function Photos({ photos }) {
+  //console.log("photo", photos);
+  const { user: loggedInUser } = useContext(UserContext);
+ // console.log("user", loggedInUser?.uid);
   return (
     <div className="h-16 border-t border-gray-primary mt-12 pt-4">
       <div className="grid grid-cols-3 gap-8 mt-4 mb-12">
@@ -11,7 +16,7 @@ function Photos({ photos }) {
           </>
         ) : photos.length > 0 ? (
           photos.map((photo) => (
-            <div key={photo.id} className="relative group ">
+            <div key={photo.photoId} className="relative group ">
               <img src={photo.imageSrc} alt={photo.caption} />
               <div className="absolute bottom-0 left-0 bg-gray-200 z-10 w-full justify-evenly items-center h-full bg-black-faded group-hover:flex hidden">
                 <p className="flex items-center text-white font-bold">
@@ -19,7 +24,11 @@ function Photos({ photos }) {
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5"
                     viewBox="0 0 20 20"
-                    fill="currentColor"
+                    fill={
+                      photo.likes.includes(loggedInUser?.uid)
+                        ? "red"
+                        : "currentColor"
+                    }
                   >
                     <path
                       fillRule="evenodd"
@@ -47,9 +56,11 @@ function Photos({ photos }) {
               </div>
             </div>
           ))
-        ) :null}
+        ) : null}
       </div>
-      {photos.length===0&&<p className="text-center text-2xl">No posts yet</p>}
+      {photos.length === 0 && (
+        <p className="text-center text-2xl">No posts yet</p>
+      )}
     </div>
   );
 }
