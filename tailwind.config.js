@@ -22,6 +22,7 @@ module.exports = {
       },
       red: {
         primary: "#ed4956",
+        apple: "#FF0800",
       },
     },
   },
