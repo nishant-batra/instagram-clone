@@ -2,14 +2,13 @@ import React, { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import PropTypes from "prop-types";
 import UserContext from "../../context/user";
-import useUser from "../../hooks/use-user";
 function Photos({ photos }) {
   //console.log("photo", photos);
   const { user: loggedInUser } = useContext(UserContext);
  // console.log("user", loggedInUser?.uid);
   return (
     <div className="h-16 border-t border-gray-primary mt-12 pt-4">
-      <div className="grid grid-cols-3 gap-8 mt-4 mb-12">
+      <div className="grid grid-cols-3 gap-8 mt-4 mb-12 ">
         {!photos ? (
           <>
             <Skeleton count={12} width={320} height={400} />

@@ -1,24 +1,48 @@
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import { useContext } from "react";
 import FirebaseContext from "../context/firebase";
 import { Link } from "react-router-dom";
 import UserContext from "../context/user";
 import * as ROUTES from "../constants/routes";
 import useUser from "../hooks/use-user";
-function Header() {
+import { connect } from "react-redux";
+import { changeTheme } from "../actions";
+function Header(props) {
   const { firebase } = useContext(FirebaseContext);
   const { user: authUser } = useContext(UserContext);
   const [displayPopUp, setDisplayPopUp] = useState(0);
   const { user } = useUser(authUser?.uid);
+  //const { dark } = useContext(darkModeContext);
+  // const [darkMode, setDarkMode] = useState(useContext(darkModeContext));
+  // const [bg, setBg] = useState(darkMode ? "dark" : "white");
+  // const [textColor, setTextColor] = useState(darkMode ? "white" : "dark");
+
+
+
+  const darkMode=props.theme;
+  // console.log("user dark", user.dark);
+  //const [borderColor,setBorderColor]=useState(darkMode?'dark':'white');
+
+  const handleDarkMode = async () => {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.docId)
+      .update({
+        dark: darkMode ? false : true,
+      });
+    props.dispatch(changeTheme(darkMode));
+  };
   const handleSignout = () => {
     setDisplayPopUp(1);
   };
+ // console.log("user", user);
   // console.log("header user", response);
   return (
     <>
       {displayPopUp ? (
         <div className="w-full h-full top-0 left-0 fixed bg-black-faded z-50">
-          <div className=" w-52 h-36 top-96 left-1/2 -mx-16 shadow-2xl fixed flex flex-col justify-between items-center rounded-2xl bg-gradient-to-r from-gray-primary to-white">
+          <div className={" w-52 h-36 top-96 left-1/2 -mx-16 shadow-2xl fixed flex flex-col justify-between items-center rounded-2xl opacity-100 "+(darkMode?"bg-dark ":"bg-white")}>
             <div className="m-2 relative top-10">Do you want to Signout?</div>
             <div className="flex w-full justify-around">
               <div
@@ -44,7 +68,11 @@ function Header() {
           </div>
         </div>
       ) : null}
-      <header className="h-16 bg-white border-b border-gray-primary mb-8">
+      <header
+        className={`h-16 bg-${
+          darkMode ? "dark" : "white"
+        } border-b border-gray-primary mb-8`}
+      >
         <div className="container mx-auto max-w-screen-lg h-full">
           <div className="flex justify-between h-full">
             <div className="text-gray-700 text-center flex items-center align-items cursor-pointer">
@@ -68,7 +96,7 @@ function Header() {
                       //  class="h-6 w-6"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke="currentColor"
+                      stroke={darkMode ? "white" : "currentColor"}
                     >
                       <path
                         strokeLinecap="round"
@@ -92,6 +120,34 @@ function Header() {
                       />
                     </Link>
                   </div>
+
+                  {darkMode ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-8 w-8 cursor-pointer mr-6"
+                      viewBox="0 0 20 20"
+                      fill="white"
+                      onClick={handleDarkMode}
+                    >
+                      <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-8 w-8 text-black-light cursor-pointer mr-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      onClick={handleDarkMode}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                      />
+                    </svg>
+                  )}
                   <button
                     type="button"
                     title="Sign Out"
@@ -109,7 +165,7 @@ function Header() {
                       //   class="h-6 w-6"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke="currentColor"
+                      stroke={darkMode ? "white" : "currentColor"}
                     >
                       <path
                         strokeLinecap="round"
@@ -147,5 +203,9 @@ function Header() {
     </>
   );
 }
-
-export default Header;
+function mapStateToProps(state) {
+  return {
+    theme: state.dark,
+  };
+}
+export default connect(mapStateToProps)(Header);

@@ -24,6 +24,7 @@ module.exports = {
         primary: "#ed4956",
         apple: "#FF0800",
       },
+      dark: "#202124",
     },
   },
   variants: {

@@ -2,11 +2,12 @@ import React, { useContext } from "react";
 import LoggedInUserContext from "../../context/logged-in-user";
 import Suggestions from "./suggestions";
 import User from "./user";
-function Sidebar(props) {
+function Sidebar() {
   const { user } = useContext(LoggedInUserContext);
   //console.log("user", user);
+
   return (
-    <div className="p-4">
+    <div className={"p-4"}>
       <User userName={user.username} fullName={user.fullName} />
       <Suggestions
         userId={user.userId}
@@ -17,4 +18,4 @@ function Sidebar(props) {
   );
 }
 
-export default Sidebar;
+export default (Sidebar);

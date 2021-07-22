@@ -5,14 +5,17 @@ import Image from "./image";
 import Actions from "./actions";
 import Footer from "./footer";
 import Comments from "./comments";
-function Post({ content }) {
+import {connect} from "react-redux";
+function Post(props) {
   // console.log(content);
   const commentInput = useRef(null);
+  const{content}=props;
+  const darkMode=props.theme;
   const handleFocus = () => {
     commentInput.current.focus();
   };
   return (
-    <div className="rounded col-span-4 border bg-white border-gray-primary mb-8">
+    <div className={"rounded col-span-4 border border-gray-primary mb-8"+(darkMode?" bg-dark text-white":" bg-white")}>
       <Header username={content.username} />
       <Image src={content.imageSrc} caption={content.caption} />
       <Actions
@@ -31,8 +34,13 @@ function Post({ content }) {
     </div>
   );
 }
+function mapStateToProps(state) {
+  return {
+    theme: state.dark,
+  };
+}
 
-export default Post;
+export default connect(mapStateToProps)(Post);
 Post.propTypes = {
   content: PropTypes.shape({
     imageSrc: PropTypes.string.isRequired,

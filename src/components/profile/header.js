@@ -45,7 +45,7 @@ function Header({
     if (loggedInUser && user.username && profileUserId) {
       isLoggedInUserFollowingProfile();
     }
-  }, [authUser, user, profileUsername]);
+  }, [authUser, user, profileUsername,user.following]);
   //console.log("puid", profileUserId);
   const handleToggelFollow = async () => {
     await updateFollower(profileUserId, profileDocId, user.userId);

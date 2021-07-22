@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { getUserByUsername } from "../services/firebase";
 import * as ROUTES from "../constants/routes";
+import { connect } from "react-redux";
 import UserProfile from "../components/profile";
 import Header from "../components/Header";
 function Profile(props) {
@@ -9,6 +10,7 @@ function Profile(props) {
   const [userExists, setUserExists] = useState(false);
   const [user, setUser] = useState({});
   const history = useHistory();
+  const darkMode = props.theme;
   useEffect(() => {
     async function checkUserExists() {
       const [doesUserExist] = await getUserByUsername(username);
@@ -23,7 +25,7 @@ function Profile(props) {
     // console.log("user", user);
   }, [history, username]);
   return userExists ? (
-    <div className="bg-gray-background">
+    <div className={"h-screen overflow-y-auto "+(darkMode ? "bg-dark text-white" : "bg-gray-background")}>
       <Header />
       {/* {console.log("user",user)} */}
       <div className="mx-auto max-w-screen-lg">
@@ -32,5 +34,9 @@ function Profile(props) {
     </div>
   ) : null;
 }
-
-export default Profile;
+function mapStateToProps(state) {
+  return {
+    theme: state.dark,
+  };
+}
+export default connect(mapStateToProps)(Profile);

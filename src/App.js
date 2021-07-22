@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import * as ROUTES from "./constants/routes";
 import UserContext from "./context/user";
+
 import useAuthListener from "./hooks/use-auth-listener";
 import ProtectedRoutes from "./helpers/protected.routes";
 import "./styles/app.css";
@@ -25,22 +26,24 @@ function App() {
   const { user } = useAuthListener();
  
   return (
-    <UserContext.Provider value={{ user }}>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Router>
-          <Switch>
-            <Route component={Login} path={ROUTES.LOGIN} />
-            <Route component={Signup} path={ROUTES.SIGNUP} />
 
-            <ProtectedRoutes user={user} path={ROUTES.DASHBOARD} exact>
-              <Dashboard />
-            </ProtectedRoutes>
-            <Route component={Profile} path={ROUTES.PROFILE} />
-            <Route component={NotFound} />
-          </Switch>
-        </Router>
-      </Suspense>
-    </UserContext.Provider>
+      <UserContext.Provider value={{ user }}>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Router>
+            <Switch>
+              <Route component={Login} path={ROUTES.LOGIN} />
+              <Route component={Signup} path={ROUTES.SIGNUP} />
+
+              <ProtectedRoutes user={user} path={ROUTES.DASHBOARD} exact>
+                <Dashboard />
+              </ProtectedRoutes>
+              <Route component={Profile} path={ROUTES.PROFILE} />
+              <Route component={NotFound} />
+            </Switch>
+          </Router>
+        </Suspense>
+      </UserContext.Provider>
+
   );
 }
 

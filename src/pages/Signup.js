@@ -30,6 +30,7 @@ function Signup(props) {
           emailAddress: emailAddress.toLowerCase(),
           following: [],
           followers: [],
+          dark: false,
           dateCreated: Date.now(),
         });
         history.push(ROUTES.DASHBOARD);
